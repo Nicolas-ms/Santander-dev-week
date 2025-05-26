@@ -1,4 +1,4 @@
-# Santander Dev Week 2023 - API
+# Santander Dev Week - API
 
 API RESTful desenvolvida em Java com Spring Boot para a Santander Dev Week. O projeto simula funcionalidades bancárias, como cadastro de usuários, contas, cartões, funcionalidades e notícias.
 
