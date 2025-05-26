@@ -1,62 +1,82 @@
-# Santander Dev Week 2023
+# Santander Dev Week 2023 - API
 
-Java RESTful API criada para a Santander Dev Week.
+API RESTful desenvolvida em Java com Spring Boot para a Santander Dev Week. O projeto simula funcionalidades bancárias, como cadastro de usuários, contas, cartões, funcionalidades e notícias.
 
-## Principais Tecnologias
- - **Java 17**: Utilizaremos a versão LTS mais recente do Java para tirar vantagem das últimas inovações que essa linguagem robusta e amplamente utilizada oferece;
- - **Spring Boot 3**: Trabalharemos com a mais nova versão do Spring Boot, que maximiza a produtividade do desenvolvedor por meio de sua poderosa premissa de autoconfiguração;
- - **Spring Data JPA**: Exploraremos como essa ferramenta pode simplificar nossa camada de acesso aos dados, facilitando a integração com bancos de dados SQL;
- - **OpenAPI (Swagger)**: Vamos criar uma documentação de API eficaz e fácil de entender usando a OpenAPI (Swagger), perfeitamente alinhada com a alta produtividade que o Spring Boot oferece;
- - **Railway**: facilita o deploy e monitoramento de nossas soluções na nuvem, além de oferecer diversos bancos de dados como serviço e pipelines de CI/CD.
+## Tecnologias Utilizadas
+- **Java 17**
+- **Spring Boot 3**
+- **Spring Data JPA**
+- **H2 Database (dev) / PostgreSQL (prod)**
+- **OpenAPI/Swagger**
+- **Gradle**
 
-## [Link do Figma](https://www.figma.com/file/0ZsjwjsYlYd3timxqMWlbj/SANTANDER---Projeto-Web%2FMobile?type=design&node-id=1421%3A432&mode=design&t=6dPQuerScEQH0zAn-1)
+## Arquitetura
+- **Camada de domínio**: Entidades JPA para User, Account, Card, Feature, News.
+- **DTOs**: Exposição de dados desacoplada do modelo de domínio.
+- **Service/Repository**: Regras de negócio e persistência.
+- **Controller**: Endpoints RESTful.
+- **Mapper**: Conversão entre entidades e DTOs.
+- **Tratamento global de exceções**.
 
-O Figma foi utilizado para a abstração do domínio desta API, sendo útil na análise e projeto da solução.
+## Endpoints Principais
 
-## Diagrama de Classes (Domínio da API)
+### Usuários
+- `GET /users/{id}`: Busca usuário por ID.
+- `POST /users`: Cria um novo usuário.
 
-```mermaid
-classDiagram
-  class User {
-    -String name
-    -Account account
-    -Feature[] features
-    -Card card
-    -News[] news
-  }
+> **Obs:** Endpoints retornam e recebem DTOs, não entidades do domínio.
 
-  class Account {
-    -String number
-    -String agency
-    -Number balance
-    -Number limit
-  }
-
-  class Feature {
-    -String icon
-    -String description
-  }
-
-  class Card {
-    -String number
-    -Number limit
-  }
-
-  class News {
-    -String icon
-    -String description
-  }
-
-  User "1" *-- "1" Account
-  User "1" *-- "N" Feature
-  User "1" *-- "1" Card
-  User "1" *-- "N" News
+### Exemplo de Payload (UserDTO)
+```json
+{
+  "name": "João Silva",
+  "account": {
+    "number": "12345-6",
+    "agency": "0001",
+    "balance": 1000.00,
+    "limit": 500.00
+  },
+  "card": {
+    "number": "5555-6666-7777-8888",
+    "limit": 2000.00
+  },
+  "features": [
+    { "icon": "pix", "description": "Transferências via Pix" }
+  ],
+  "news": [
+    { "icon": "promo", "description": "Promoção de cashback" }
+  ]
+}
 ```
 
-## IMPORTANTE
+## Como Executar
 
-Este projeto foi construído com um viés totalmente educacional para a DIO. Por isso, disponibilizamos uma versão mais robusta dele no repositório oficial da DIO:
+1. **Clone o repositório:**
+   ```bash
+   git clone <repo-url>
+   cd santander-dev-week
+   ```
+2. **Build e testes:**
+   ```bash
+   ./gradlew build
+   ```
+3. **Execute a aplicação:**
+   ```bash
+   ./gradlew bootRun
+   ```
+4. **Acesse a documentação Swagger:**
+   - [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
-### [digitalinnovationone/santander-dev-week-2023-api](https://github.com/digitalinnovationone/santander-dev-week-2023-api)
+## Testes
+- Testes automatizados podem ser executados com `./gradlew test`.
 
-Lá incluímos todas os endpoints de CRUD, além de aplicar boas práticas (uso de DTOs e refinamento na documentação da OpenAPI). Sendo assim, caso queira um desafio/referência mais completa é só acessar 👊🤩
+## Melhorias Recentes
+- Uso de DTOs para segurança e flexibilidade.
+- Refatoração do controller e criação de mappers.
+- Estrutura pronta para expansão de endpoints e regras de negócio.
+
+## Contribuição
+Pull requests são bem-vindos! Sinta-se à vontade para propor melhorias, correções ou novas funcionalidades.
+
+---
+Projeto educacional, sem fins comerciais.
